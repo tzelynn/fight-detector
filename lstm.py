@@ -9,9 +9,10 @@ class ActionRecognitionLSTM(nn.Module):
             input_dim: int, 
             output_dim: int, 
             hidden_dim: int, 
-            dropout: float =0
-        ):
+            dropout: float =0.0
+        ) -> None:
         """Initialises model
+
         Inputs:
             input_dim (int): input dimensions
             output_dim (int): output dimensions
@@ -38,13 +39,14 @@ class ActionRecognitionLSTM(nn.Module):
         self.softmax = nn.Softmax(0)
 
 
-    def forward(self, x: torch.Tensor):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Forward call for model
+
         Inputs:
             x (torch.Tensor): input Tensor with dimension (
                 batch_size, max_frames, max_ppl, 17, 2)
         Output:
-            
+            Tensor output with dimension (batch_size, output_dim)
         """ 
 
         x = x.flatten(start_dim=2)  # batch_size, max_frames, 340

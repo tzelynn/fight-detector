@@ -9,7 +9,7 @@ import torch
 
 def load_model(path):
     model = ActionRecognitionLSTM(
-        input_dim=442, output_dim=1, hidden_dim=1024)
+        input_dim=442, output_dim=1, hidden_dim=512)
     model.load_state_dict(torch.load(path))
     return model
 
