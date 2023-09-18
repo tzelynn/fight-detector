@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
+import os
 
-def plot_loss_curves(train_loss, val_loss, epochs):
+def plot_loss_curves(train_loss, val_loss, epochs, path):
     plt.figure(figsize=(8, 4))
     plt.plot(train_loss, marker='s', color="salmon", linestyle="-")
     plt.plot(val_loss, marker='s', color="mediumseagreen", linestyle="-")
@@ -19,9 +20,9 @@ def plot_loss_curves(train_loss, val_loss, epochs):
             bbox = dict(boxstyle="round", fc="w", ec="k", lw=0.7),
             arrowprops = dict(arrowstyle="->")
         )
-    plt.savefig(f"loss.jpg")
+    plt.savefig(os.path.join(path, "loss.jpg"))
 
-def plot_acc_curves(train_acc, val_acc, epochs):
+def plot_acc_curves(train_acc, val_acc, epochs, path):
     plt.figure(figsize=(8, 4))
     plt.plot(train_acc, marker='s', color="cornflowerblue", linestyle="-")
     plt.plot(val_acc, marker='s', color="mediumorchid", linestyle="-")
@@ -40,4 +41,4 @@ def plot_acc_curves(train_acc, val_acc, epochs):
             bbox = dict(boxstyle="round", fc="w", ec="k", lw=0.7),
             arrowprops = dict(arrowstyle="->")
         )
-    plt.savefig(f"acc.jpg")
+    plt.savefig(os.path.join(path, "acc.jpg"))

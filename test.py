@@ -26,11 +26,12 @@ def test(model, X_file, y_file):
     device = torch.device("cpu")
     loss_fn = torch.nn.BCELoss()
 
-    test_loss, test_acc, _, cm = eval_loop(
-        model, test_loader, device, loss_fn)
-    
-    print("Loss:", test_loss)
-    print("Acc:", test_acc)
+    for _ in range(10):
+        test_loss, test_acc, _, cm = eval_loop(
+            model, test_loader, device, loss_fn)
+        
+        print("Loss:", test_loss)
+        print("Acc:", test_acc)
 
     disp = ConfusionMatrixDisplay(cm)
     disp.plot()
@@ -38,4 +39,4 @@ def test(model, X_file, y_file):
 
 if __name__ == "__main__":
     model = load_model("ARLSTM.pth")
-    test(model, X_file="X_test", y_file="y_test")
+    test(model, X_file="pickled/X_test", y_file="pickled/y_test")

@@ -38,6 +38,7 @@ def trainLSTM(
             3. epoch_val_loss: list of validation loss per epoch
             4. epoch_val_acc: list of validation accuracy per epoch
     """
+    pickle_dir = "pickled"
 
     if dirs:
         # need to perform keypoint detection using YOLOv8 first
@@ -46,22 +47,22 @@ def trainLSTM(
             fight_dir, no_fight_dir)
 
         # pickle the video labels and dir
-        file = open("y_train", "ab")
+        file = open(f"{pickle_dir}/y_train", "ab")
         pickle.dump(y_train, file)
         file.close()
-        file = open("y_val", "ab")
+        file = open(f"{pickle_dir}/y_val", "ab")
         pickle.dump(y_val, file)
         file.close()
-        file = open("y_test", "ab")
+        file = open(f"{pickle_dir}/y_test", "ab")
         pickle.dump(y_test, file)
         file.close()
-        file = open("X_train_dir", "ab")
+        file = open(f"{pickle_dir}/X_train_dir", "ab")
         pickle.dump(X_train, file)
         file.close()
-        file = open("X_val_dir", "ab")
+        file = open(f"{pickle_dir}/X_val_dir", "ab")
         pickle.dump(X_val, file)
         file.close()
-        file = open("X_test_dir", "ab")
+        file = open(f"{pickle_dir}/X_test_dir", "ab")
         pickle.dump(X_test, file)
         file.close()
 
@@ -77,29 +78,29 @@ def trainLSTM(
             X_test, max_frames, max_ppl, detectionModel, padding)
 
         # pickle the detected keypoints
-        file = open("X_train", "ab")
+        file = open(f"{pickle_dir}/X_train", "ab")
         pickle.dump(X_train_kp, file)
         file.close()
-        file = open("X_val", "ab")
+        file = open(f"{pickle_dir}/X_val", "ab")
         pickle.dump(X_val_kp, file)
         file.close()
-        file = open("X_test", "ab")
+        file = open(f"{pickle_dir}/X_test", "ab")
         pickle.dump(X_test_kp, file)
         file.close()
     else:
         # use previously detected keypoints
         print("using pickled detections...")
-        file_p = open("X_train", "rb")
+        file_p = open(f"{pickle_dir}/X_train", "rb")
         X_train_kp = pickle.load(file_p)
         file_p.close()
-        file_p = open("X_val", "rb")
+        file_p = open(f"{pickle_dir}/X_val", "rb")
         X_val_kp = pickle.load(file_p)
         file_p.close()
 
-        file_p = open("y_train", "rb")
+        file_p = open(f"{pickle_dir}/y_train", "rb")
         y_train = pickle.load(file_p)
         file_p.close()
-        file_p = open("y_val", "rb")
+        file_p = open(f"{pickle_dir}/y_val", "rb")
         y_val = pickle.load(file_p)
         file_p.close()
 
@@ -175,10 +176,10 @@ def trainLSTM(
     print(f"lowest val loss {best_val_loss}, val acc {best_val_acc}")
     disp = ConfusionMatrixDisplay(best_cm)
     disp.plot()
-    disp.figure_.savefig("cm.jpg")
+    disp.figure_.savefig("cm_val.jpg")
 
     # save training and validation stats
-    file_stats = open("stats", "ab")
+    file_stats = open(f"{pickle_dir}/stats", "ab")
     stats = {"train_loss": epoch_train_loss,
              "train_acc": epoch_train_acc,
              "val_loss": epoch_val_loss,
@@ -188,8 +189,8 @@ def trainLSTM(
     file_stats.close()
 
     # plot learning curves
-    plot_loss_curves(epoch_train_loss, epoch_val_loss, epochs)
-    plot_acc_curves(epoch_train_acc, epoch_val_acc, epochs)
+    plot_loss_curves(epoch_train_loss, epoch_val_loss, epochs, "visualisations")
+    plot_acc_curves(epoch_train_acc, epoch_val_acc, epochs, "visualisations")
 
     return epoch_train_loss, epoch_train_acc, epoch_val_loss, epoch_val_acc
 
